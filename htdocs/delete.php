@@ -22,6 +22,13 @@ if (! $app['server']->dnExists($request['dn']))
 $result = $app['server']->delete($request['dn']);
 
 if ($result) {
+	try {
+        	$portal_entry_callback = new portal_entry_callback($request['dn']);
+        	$portal_entry_callback->deleteCallback();
+    	} catch (Exception $e) {
+        	file_put_contents(__DIR__ . '/../logs/log.txt', 'delete ' . $request['dn'] . ' to redis error:' . $e->getMessage(), FILE_APPEND);
+    	}	
+
 	$redirect_url = '';
 
 	if (isAjaxEnabled())

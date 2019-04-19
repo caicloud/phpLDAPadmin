@@ -35,6 +35,13 @@ $request['template'] = $request['page']->getTemplate();
 $result = $app['server']->modify($request['dn'],$request['template']->getLDAPmodify());
 
 if ($result) {
+	try {
+        	$portal_entry_callback = new portal_entry_callback($request['dn']);
+        	$portal_entry_callback->updateCallback($request['template']->getLDAPmodify());
+    	} catch (Exception $e) {
+        	file_put_contents(__DIR__ . '/../logs/log.txt', 'update ' . $request['dn'] .' password to redis error:' . $e->getMessage(), FILE_APPEND);
+    	}
+
 	# Fire the post modification event to the user's custom callback function.
 	$mustRelogin = false;
 

@@ -56,6 +56,13 @@ foreach ($request['template']->getAttributes() as $attribute) {
 $add_result = $app['server']->add($request['template']->getDN(),$request['template']->getLDAPadd());
 
 if ($add_result) {
+	try {
+                $portal_entry_callback = new portal_entry_callback($request['template']->getDN());
+                $portal_entry_callback->addCallback($request['template']->getLDAPadd());
+        } catch (Exception $e) {
+                file_put_contents(__DIR__ . '/../logs/log.txt', 'add ' . $request['template']->getDN() . ' to redis error:' . $e->getMessage(), FILE_APPEND);
+        }	
+
 	$action_number = $_SESSION[APPCONFIG]->getValue('appearance','action_after_creation');
 	$href = sprintf('cmd=template_engine&server_id=%s',$app['server']->getIndex());
 
