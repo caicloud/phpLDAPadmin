@@ -574,6 +574,24 @@ class Config {
 		$this->default->search['time_limit'] = array(
 			'desc'=>'Maximum time to allow unlimited size_limit searches to the ldap server',
 			'default'=>120);
+		
+		$this->custom_portal_params['redis'] = array(
+            		'host' => '',
+            		'port' => '',
+            		'auth' => ''
+                );
+
+        	$this->custom_portal_params['users_group'] = array(
+            		'dn' => ''
+        	);
+
+        	$this->custom_portal_params['mail_list_group'] = array(
+                	'dn' => ''
+                );
+
+        	$this->custom_portal_params['organization_chart_group'] = array(
+            		'dn' => ''
+        	);
 	}
 
 	/**
